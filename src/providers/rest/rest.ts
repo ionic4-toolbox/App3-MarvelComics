@@ -24,6 +24,7 @@ export class RestProvider {
   private apiUrlMoviesBySeries = 'http://marvel.somee.com/restservice/MoviesBySeries';
   private apiUrlMoviesCharacter = 'http://marvel.somee.com/restservice/CharactersByMoviesID';
   private apiUrlCharacterMNovies = 'http://marvel.somee.com/restservice/MoviesByCharacterID';
+  private apiUrlDownloads = 'http://marvel.somee.com/restservice/DownloadsByMoviesID';
 
   // private apiUrl = 'http://localhost:20949/restservice/AllSeries';
   // private apiUrlMovies = 'http://localhost:20949/restservice/AllMovies';
@@ -47,6 +48,12 @@ export class RestProvider {
   getSeriesMovies(SeriesId: any): Observable<string[]> {
     return this.http.post(this.apiUrlMoviesBySeries, { SeriesID: SeriesId.SeriesId }, {})
       .map(this.extractData1)
+      .catch(this.handleError);
+  }
+
+  getDownloads(SeriesId: any): Observable<string[]> {
+    return this.http.post(this.apiUrlDownloads, { SeriesID: SeriesId.SeriesId }, {})
+      .map(this.extractData3)
       .catch(this.handleError);
   }
 
@@ -95,6 +102,19 @@ export class RestProvider {
     let x: any;
     x = res;
     let body = x.CharactersArray.sort(function(a,b) {return (a.CharacterName> b.CharacterName) ? 1 : ((b.CharacterName > a.CharacterName) ? -1 : 0);} );
+    //for (let index = 0; index < 4; index++) {
+    //  x.CharactersArray = x.CharactersArray.concat(x.CharactersArray);
+    //}
+    //let body = x.CharactersArray.sort(function (a, b) { return (a.CharacterName > b.CharacterName) ? 1 : ((b.CharacterName > a.CharacterName) ? -1 : 0); });
+    //let body = x.CharactersArray;
+    return body || {};
+  }
+
+  private extractData3(res: Response) {
+    // let resp = res.json();
+    let x: any;
+    x = res;
+    let body = x.DownloadsArray;
     //for (let index = 0; index < 4; index++) {
     //  x.CharactersArray = x.CharactersArray.concat(x.CharactersArray);
     //}

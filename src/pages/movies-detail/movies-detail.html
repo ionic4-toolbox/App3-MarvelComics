@@ -20,6 +20,10 @@
   <div>{{selectedItem.MovieRating}}
     <ion-icon name="star"></ion-icon>
   </div>
+  <button ion-button color="secondary" round full icon-start (click)="showDownloadAlert()">
+    <ion-icon name="download"></ion-icon>
+    Download
+  </button>
   <h4>Plot:</h4>
   <em><p style="text-align: left;" [innerHTML]="text"></p></em>
   <button ion-button color="secondary" (click)=characters() round full>{{selectedItem.MovieName}} Characters</button>
