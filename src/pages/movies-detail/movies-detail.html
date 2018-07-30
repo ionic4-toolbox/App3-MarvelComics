@@ -20,6 +20,12 @@
   <div>{{selectedItem.MovieRating}}
     <ion-icon name="star"></ion-icon>
   </div>
+  <h4>Trailer:</h4>
+  <div class="videowrapper">
+    <iframe [src]="updateVideoUrl(video_id)" frameborder="0" allowfullscreen
+        width="640" height="550"
+    ></iframe>
+</div>
   <button ion-button color="secondary" round full icon-start (click)="showDownloadAlert()">
     <ion-icon name="download"></ion-icon>
     Download

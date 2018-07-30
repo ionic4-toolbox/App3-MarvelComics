@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { MoviesIntentPage } from '../movies-intent/movies-intent';
-import { RestProvider } from '../../providers/rest/rest';
 import { AlertController } from 'ionic-angular';
+import { RestProvider } from '../../providers/rest/rest';
+import { DomSanitizer } from '@angular/platform-browser';
+import { YoutubeVideoPlayer } from '@ionic-native/youtube-video-player';
 
 /**
  * Generated class for the MoviesDetailPage page.
@@ -18,13 +20,17 @@ import { AlertController } from 'ionic-angular';
 })
 export class MoviesDetailPage {
 
-  video_id: any;
   selectedItem: any;
   text: any;
   countries: any;
   errorMessage: string;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public atrCtrl: AlertController, public rest: RestProvider) {
+  video_id: any;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public sanitizer: DomSanitizer,
+    public youtube: YoutubeVideoPlayer, public atrCtrl: AlertController, public rest: RestProvider) {
     this.selectedItem = navParams.get('c');
+    this.video_id = this.selectedItem.VideoID;
+    //this.video_id = 'pWdKf3MneyI';
     this.text = this.selectedItem.MoviePlot;
   }
 
@@ -34,6 +40,16 @@ export class MoviesDetailPage {
          countries => this.countries = countries,
          error =>  this.errorMessage = <any>error);
        }
+
+
+       updateVideoUrl(id: string) {
+        // Appending an ID to a YouTube URL is safe.
+        // Always make sure to construct SafeValue objects as
+        // close as possible to the input data, so
+        // that it's easier to check if the value is safe.
+        let dangerousVideoUrl = 'https://www.youtube.com/embed/' + id + '?rel=0&showinfo=0';
+        return this.sanitizer.bypassSecurityTrustResourceUrl(dangerousVideoUrl);
+    }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MoviesDetailPage');
@@ -90,5 +106,4 @@ else{
   alert.present();
 }
 }
-
 }
